@@ -6,24 +6,12 @@ from datetime import datetime
 
 import requests
 
-
-# URL-ul API-ului
 API_URL = "http://localhost:8080/"
-
-# Rădăcina proiectului Automation
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-
-# Folderul unde vor fi salvate rezultatele
 DATA_DIR = PROJECT_ROOT / "data"
-
-# Fișierul de log
 ERROR_LOG = PROJECT_ROOT / "error.log"
-
-# API key-ul folosit de serviciul nostru
 API_KEY = "lorik"
 
-
-# Configurarea logării erorilor
 logging.basicConfig(
     filename=ERROR_LOG,
     level=logging.ERROR,
@@ -58,7 +46,6 @@ def get_exchange_rate(from_currency, to_currency, date):
 
         result = response.json()
 
-        # API-ul nostru poate întoarce o eroare în câmpul "error"
         if result.get("error"):
             log_error(result["error"])
             return None
@@ -78,7 +65,7 @@ def save_data(result, from_currency, to_currency, date):
     """Salvează rezultatul în folderul data/."""
 
     try:
-        # Creează folderul data dacă nu există
+   
         DATA_DIR.mkdir(exist_ok=True)
 
         filename = f"{from_currency}_{to_currency}_{date}.json"
@@ -119,9 +106,6 @@ def validate_date(date):
 
 def main():
 
-    # Trebuie să avem exact:
-    # python currency_exchange_rate.py USD EUR 2025-01-01
-
     if len(sys.argv) != 4:
         log_error(
             "Număr invalid de parametri. "
@@ -134,18 +118,15 @@ def main():
     to_currency = sys.argv[2].upper()
     date = sys.argv[3]
 
-    # Verificăm data
     if not validate_date(date):
         sys.exit(1)
 
-    # Cerem cursul valutar de la API
     result = get_exchange_rate(
         from_currency,
         to_currency,
         date
     )
 
-    # Dacă API-ul a răspuns cu succes, salvăm rezultatul
     if result is not None:
         save_data(
             result,
