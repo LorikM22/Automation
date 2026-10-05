@@ -1,7 +1,9 @@
 import sys
+import os
 import json
 import logging
 from pathlib import Path
+from dotenv import load_dotenv
 from datetime import datetime
 
 import requests
@@ -10,7 +12,9 @@ API_URL = "http://localhost:8080/"
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 ERROR_LOG = PROJECT_ROOT / "error.log"
-API_KEY = "lorik"
+load_dotenv(PROJECT_ROOT / "lab02prep" / ".env")
+API_KEY = os.getenv("API_KEY")
+
 
 logging.basicConfig(
     filename=ERROR_LOG,
