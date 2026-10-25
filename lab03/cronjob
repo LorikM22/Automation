@@ -1,0 +1,10 @@
+SHELL=/bin/sh
+
+# 1. Zilnic la 06:00 – cursul MDL -> EUR pentru ziua precedentă
+0 6 * * * /usr/local/bin/python /app/lab03/currency_exchange_rate.py MDL EUR $(date -d "yesterday" +\%Y-\%m-\%d) >> /var/log/cron.log 2>&1
+
+# 2. Vinerea la 17:00 – cursul MDL -> USD pentru săptămâna precedentă (data de acum 7 zile)
+0 17 * * 5 /usr/local/bin/python /app/lab03/currency_exchange_rate.py MDL USD $(date -d "7 days ago" +\%Y-\%m-\%d) >> /var/log/cron.log 2>&1
+
+# TEST (decomentează doar pentru verificare): rulează în fiecare minut cu o dată din perioada disponibilă
+* * * * * /usr/local/bin/python /app/lab03/currency_exchange_rate.py MDL EUR 2025-05-01 >> /var/log/cron.log 2>&1

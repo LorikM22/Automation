@@ -1,0 +1,16 @@
+services:
+  currency-cron:
+    build: .
+    container_name: lab03-currency-cron
+    # Cheia API (API_KEY) din același .env ca la lab02 (rămâne în .gitignore)
+    env_file:
+      - ../lab02prep/.env
+    environment:
+      # API-ul rulează pe calculatorul gazdă, nu în acest container
+      API_URL: http://host.docker.internal:8080/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # Fișierele JSON apar în Automation/data, la fel ca la lab02
+      - ../data:/app/data
+    restart: unless-stopped
