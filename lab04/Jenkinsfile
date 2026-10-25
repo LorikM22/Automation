@@ -1,0 +1,41 @@
+pipeline {
+    agent {
+        label 'php-agent'
+    }
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                echo 'Preparing project...'
+                dir('lab04/php-app') {
+                    sh 'php -v'
+                    sh 'composer --version'
+                    sh 'composer install --no-interaction --prefer-dist'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                dir('lab04/php-app') {
+                    sh 'mkdir -p build'
+                    sh 'vendor/bin/phpunit --log-junit build/junit.xml'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            junit allowEmptyResults: true, testResults: 'lab04/php-app/build/junit.xml'
+            echo 'Pipeline completed.'
+        }
+        success {
+            echo 'All stages completed successfully!'
+        }
+        failure {
+            echo 'Errors detected in the pipeline.'
+        }
+    }
+}

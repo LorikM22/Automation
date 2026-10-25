@@ -1,0 +1,8 @@
+# cheile SSH și variabilele de mediu nu se publică
+secrets/
+.env
+
+# dependențele Composer
+php-app/vendor/
+php-app/build/
+php-app/.phpunit.cache/
